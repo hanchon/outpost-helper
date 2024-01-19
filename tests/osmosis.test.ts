@@ -3,13 +3,13 @@ import {
   GenerateOsmosisMemo,
   NO_OSMOSIS_FALLBACK,
   OSMOSIS_OUTPOST_CONTRACT,
-  OmosisMemoParams,
+  OsmosisMemoParams,
   UOSMO_DENOM,
 } from "../src/osmosis";
 
 describe("test osmosis memos", () => {
   it("valid no fallback address", () => {
-    const params: OmosisMemoParams = {
+    const params: OsmosisMemoParams = {
       outputDenom: UOSMO_DENOM,
       slippagePercentage: "5",
       windowSeconds: 20,
@@ -23,7 +23,7 @@ describe("test osmosis memos", () => {
   });
 
   it("valid with fallback address", () => {
-    const params: OmosisMemoParams = {
+    const params: OsmosisMemoParams = {
       outputDenom: AEVMOS_DENOM,
       slippagePercentage: "5",
       windowSeconds: 20,
@@ -36,7 +36,7 @@ describe("test osmosis memos", () => {
   });
 
   it("invalid slippage (less than 0)", () => {
-    const params: OmosisMemoParams = {
+    const params: OsmosisMemoParams = {
       outputDenom: UOSMO_DENOM,
       slippagePercentage: "-1",
       windowSeconds: 20,
@@ -50,7 +50,7 @@ describe("test osmosis memos", () => {
   });
 
   it("invalid slippage (more than 20)", () => {
-    const params: OmosisMemoParams = {
+    const params: OsmosisMemoParams = {
       outputDenom: UOSMO_DENOM,
       slippagePercentage: "21",
       windowSeconds: 20,
@@ -64,7 +64,7 @@ describe("test osmosis memos", () => {
   });
 
   it("invalid windowSeconds (less than 0)", () => {
-    const params: OmosisMemoParams = {
+    const params: OsmosisMemoParams = {
       outputDenom: UOSMO_DENOM,
       slippagePercentage: "5",
       windowSeconds: -1,
@@ -78,7 +78,7 @@ describe("test osmosis memos", () => {
   });
 
   it("invalid windowSeconds (more than 60)", () => {
-    const params: OmosisMemoParams = {
+    const params: OsmosisMemoParams = {
       outputDenom: UOSMO_DENOM,
       slippagePercentage: "5",
       windowSeconds: 61,
@@ -92,7 +92,7 @@ describe("test osmosis memos", () => {
   });
 
   it("invalid denom (aevmos)", () => {
-    const params: OmosisMemoParams = {
+    const params: OsmosisMemoParams = {
       outputDenom: "aevmos",
       slippagePercentage: "5",
       windowSeconds: 20,
@@ -106,7 +106,7 @@ describe("test osmosis memos", () => {
   });
 
   it("invalid fallbackAddress (empty)", () => {
-    const params: OmosisMemoParams = {
+    const params: OsmosisMemoParams = {
       outputDenom: UOSMO_DENOM,
       slippagePercentage: "5",
       windowSeconds: 20,
@@ -120,7 +120,7 @@ describe("test osmosis memos", () => {
   });
 
   it("invalid fallbackAddress (evmos wallet)", () => {
-    const params: OmosisMemoParams = {
+    const params: OsmosisMemoParams = {
       outputDenom: UOSMO_DENOM,
       slippagePercentage: "5",
       windowSeconds: 20,
@@ -134,7 +134,7 @@ describe("test osmosis memos", () => {
   });
 
   it("invalid fallbackAddress (incomplete osmos wallet -> 1 char less)", () => {
-    const params: OmosisMemoParams = {
+    const params: OsmosisMemoParams = {
       outputDenom: UOSMO_DENOM,
       slippagePercentage: "5",
       windowSeconds: 20,
