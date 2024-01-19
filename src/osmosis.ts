@@ -28,7 +28,7 @@ export type OsmosisOutpostMemo = {
   };
 };
 
-export type OmosisMemoParams = {
+export type OsmosisMemoParams = {
   outputDenom: string;
   slippagePercentage: string;
   windowSeconds: number;
@@ -38,7 +38,7 @@ export type OmosisMemoParams = {
 
 // GenerateOsmosisMemo validates slippage, windowSeconds, denom and fallback address (NOTE: throws on error)
 export function GenerateOsmosisMemo(
-  params: OmosisMemoParams,
+  params: OsmosisMemoParams,
   // The contract address in the omosis chain should not change
   contract: string = OSMOSIS_OUTPOST_CONTRACT,
 ) {
