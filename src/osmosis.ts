@@ -36,7 +36,7 @@ export type OmosisMemoParams = {
   fallbackAddress: string;
 };
 
-// GenerateOsmosisMemo throws error if slippage, windowSeconds or denom are invalid
+// GenerateOsmosisMemo validates slippage, windowSeconds, denom and fallback address (NOTE: throws on error)
 export function GenerateOsmosisMemo(
   params: OmosisMemoParams,
   // The contract address in the omosis chain should not change
@@ -62,6 +62,14 @@ export function GenerateOsmosisMemo(
     throw new TypeError(
       `only ${UOSMO_DENOM} and ${AEVMOS_DENOM} are supported as denominations`,
     );
+  }
+
+  const validWallet =
+    params.fallbackAddress.startsWith("osmo1") &&
+    params.fallbackAddress.length == 43;
+
+  if (params.fallbackAddress != NO_OSMOSIS_FALLBACK && !validWallet) {
+    throw new TypeError("invalid fallback address");
   }
 
   // Create message
