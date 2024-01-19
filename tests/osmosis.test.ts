@@ -1,0 +1,107 @@
+import {
+  AEVMOS_DENOM,
+  GenerateOsmosisMemo,
+  NO_OSMOSIS_FALLBACK,
+  OSMOSIS_OUTPOST_CONTRACT,
+  OmosisMemoParams,
+  UOSMO_DENOM,
+} from "../src/osmosis";
+
+describe("test osmosis memos", () => {
+  it("valid no fallback address", () => {
+    const params: OmosisMemoParams = {
+      outputDenom: UOSMO_DENOM,
+      slippagePercentage: "5",
+      windowSeconds: 20,
+      receiver: "evmos1hp2525adxv83t2sqtts6nd0w6dtrrzx56j9mqw",
+      fallbackAddress: NO_OSMOSIS_FALLBACK,
+    };
+
+    const expected = `{"wasm":{"contract":"${OSMOSIS_OUTPOST_CONTRACT}","msg":{"osmosis_swap":{"output_denom":"${params.outputDenom}","slippage":{"twap":{"slippage_percentage":"${params.slippagePercentage}","window_seconds":${params.windowSeconds}}},"receiver":"${params.receiver}","on_failed_delivery":"${params.fallbackAddress}"}}}}`;
+
+    expect(GenerateOsmosisMemo(params)).toEqual(expected);
+  });
+
+  it("valid with fallback address", () => {
+    const params: OmosisMemoParams = {
+      outputDenom: AEVMOS_DENOM,
+      slippagePercentage: "5",
+      windowSeconds: 20,
+      receiver: "evmos1hp2525adxv83t2sqtts6nd0w6dtrrzx56j9mqw",
+      fallbackAddress: "osmo1044qatzg4a0wm63jchrfdnn2u8nwdgxxt6e524",
+    };
+
+    const expected = `{"wasm":{"contract":"${OSMOSIS_OUTPOST_CONTRACT}","msg":{"osmosis_swap":{"output_denom":"${params.outputDenom}","slippage":{"twap":{"slippage_percentage":"${params.slippagePercentage}","window_seconds":${params.windowSeconds}}},"receiver":"${params.receiver}","on_failed_delivery":"${params.fallbackAddress}"}}}}`;
+    expect(GenerateOsmosisMemo(params)).toEqual(expected);
+  });
+
+  it("invalid slippage (less than 0)", () => {
+    const params: OmosisMemoParams = {
+      outputDenom: UOSMO_DENOM,
+      slippagePercentage: "-1",
+      windowSeconds: 20,
+      receiver: "evmos1hp2525adxv83t2sqtts6nd0w6dtrrzx56j9mqw",
+      fallbackAddress: "osmo1044qatzg4a0wm63jchrfdnn2u8nwdgxxt6e524",
+    };
+
+    expect(() => {
+      GenerateOsmosisMemo(params);
+    }).toThrow(RangeError);
+  });
+
+  it("invalid slippage (more than 20)", () => {
+    const params: OmosisMemoParams = {
+      outputDenom: UOSMO_DENOM,
+      slippagePercentage: "21",
+      windowSeconds: 20,
+      receiver: "evmos1hp2525adxv83t2sqtts6nd0w6dtrrzx56j9mqw",
+      fallbackAddress: "osmo1044qatzg4a0wm63jchrfdnn2u8nwdgxxt6e524",
+    };
+
+    expect(() => {
+      GenerateOsmosisMemo(params);
+    }).toThrow(RangeError);
+  });
+
+  it("invalid windowSeconds (less than 0)", () => {
+    const params: OmosisMemoParams = {
+      outputDenom: UOSMO_DENOM,
+      slippagePercentage: "5",
+      windowSeconds: -1,
+      receiver: "evmos1hp2525adxv83t2sqtts6nd0w6dtrrzx56j9mqw",
+      fallbackAddress: "osmo1044qatzg4a0wm63jchrfdnn2u8nwdgxxt6e524",
+    };
+
+    expect(() => {
+      GenerateOsmosisMemo(params);
+    }).toThrow(RangeError);
+  });
+
+  it("invalid windowSeconds (more than 60)", () => {
+    const params: OmosisMemoParams = {
+      outputDenom: UOSMO_DENOM,
+      slippagePercentage: "5",
+      windowSeconds: 61,
+      receiver: "evmos1hp2525adxv83t2sqtts6nd0w6dtrrzx56j9mqw",
+      fallbackAddress: "osmo1044qatzg4a0wm63jchrfdnn2u8nwdgxxt6e524",
+    };
+
+    expect(() => {
+      GenerateOsmosisMemo(params);
+    }).toThrow(RangeError);
+  });
+
+  it("invalid denom (aevmos)", () => {
+    const params: OmosisMemoParams = {
+      outputDenom: "aevmos",
+      slippagePercentage: "5",
+      windowSeconds: 20,
+      receiver: "evmos1hp2525adxv83t2sqtts6nd0w6dtrrzx56j9mqw",
+      fallbackAddress: "osmo1044qatzg4a0wm63jchrfdnn2u8nwdgxxt6e524",
+    };
+
+    expect(() => {
+      GenerateOsmosisMemo(params);
+    }).toThrow(TypeError);
+  });
+});
