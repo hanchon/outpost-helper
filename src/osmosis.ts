@@ -9,7 +9,7 @@ export const AEVMOS_DENOM =
   "ibc/6AE98883D4D5D5FF9E50D7130F1305DA2FFA0C652D1DD9C123657C6B4EB2DF8A";
 
 // Types
-export type OsmosisOutpostMemo = {
+type OsmosisOutpostMemo = {
   wasm: {
     contract: string;
     msg: {
@@ -39,7 +39,7 @@ export type OsmosisMemoParams = {
 // GenerateOsmosisMemo validates slippage, windowSeconds, denom and fallback address (NOTE: throws on error)
 export function GenerateOsmosisMemo(
   params: OsmosisMemoParams,
-  // The contract address in the omosis chain should not change
+  // The contract address in the osmosis chain should not change
   contract: string = OSMOSIS_OUTPOST_CONTRACT,
 ) {
   // Validations
@@ -73,7 +73,7 @@ export function GenerateOsmosisMemo(
   }
 
   // Create message
-  return JSON.stringify({
+  const msg: OsmosisOutpostMemo = {
     wasm: {
       contract: contract,
       msg: {
@@ -90,5 +90,6 @@ export function GenerateOsmosisMemo(
         },
       },
     },
-  });
+  };
+  return JSON.stringify(msg);
 }
