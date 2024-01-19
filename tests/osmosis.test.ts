@@ -104,4 +104,46 @@ describe("test osmosis memos", () => {
       GenerateOsmosisMemo(params);
     }).toThrow(TypeError);
   });
+
+  it("invalid fallbackAddress (empty)", () => {
+    const params: OmosisMemoParams = {
+      outputDenom: UOSMO_DENOM,
+      slippagePercentage: "5",
+      windowSeconds: 20,
+      receiver: "evmos1hp2525adxv83t2sqtts6nd0w6dtrrzx56j9mqw",
+      fallbackAddress: "",
+    };
+
+    expect(() => {
+      GenerateOsmosisMemo(params);
+    }).toThrow(TypeError);
+  });
+
+  it("invalid fallbackAddress (evmos wallet)", () => {
+    const params: OmosisMemoParams = {
+      outputDenom: UOSMO_DENOM,
+      slippagePercentage: "5",
+      windowSeconds: 20,
+      receiver: "evmos1hp2525adxv83t2sqtts6nd0w6dtrrzx56j9mqw",
+      fallbackAddress: "evmos1hxse9e6vthqmjkp2da334g4mquc4qssxargrx4",
+    };
+
+    expect(() => {
+      GenerateOsmosisMemo(params);
+    }).toThrow(TypeError);
+  });
+
+  it("invalid fallbackAddress (incomplete osmos wallet -> 1 char less)", () => {
+    const params: OmosisMemoParams = {
+      outputDenom: UOSMO_DENOM,
+      slippagePercentage: "5",
+      windowSeconds: 20,
+      receiver: "evmos1hp2525adxv83t2sqtts6nd0w6dtrrzx56j9mqw",
+      fallbackAddress: "osmo1zvtk39mzx5x6kze6nkmha89wf6e4ewrypsest",
+    };
+
+    expect(() => {
+      GenerateOsmosisMemo(params);
+    }).toThrow(TypeError);
+  });
 });
